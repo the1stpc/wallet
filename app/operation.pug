@@ -1,29 +1,9 @@
 extends ../app/base/base.pug
 block data
-  - var activePage = 'operation';
+  - var activePage = 'операции';
 block main
   .Title 
     h1 Операции
-  .operMenu
-    button.js-articlesSettings Настроить категории доходов/расходов
-  .articles
-    .newArticle
-      span Создать категорию
-      span    
-      select(class="js-chooseNewArticle")
-        option(value="income") дохода
-        option(value="expenses") расхода
-      span  введите название 
-      input(class="js-articleName" type="text")
-      span  
-      input(class="js-btnCreateArticle" type="button" value="создать")
-    div.container 
-      div      
-        h2 Категории доходов
-        .incomeArticles    
-      div 
-        h2 Категории расходов
-        .expensesArticles
   .operationBlock
     .blockOperations
       select(class="js-chooseArticle")
@@ -32,5 +12,4 @@ block main
       select(class="js-chooseArticlesName")
     .operationInfo
 block append js   
-  script(src="js/articleSettings.js")
   script(src="js/operations.js")
