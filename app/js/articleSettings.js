@@ -5,15 +5,15 @@ let $articles=document.querySelector('.articles');
 let tableIncomeInner = '';
 let tableExpensesInner = '';
 
-function init() {
+function initArticle() {
   addArticle();
-  render();
+  renderArticle();
 }
 
-function render() {
+function renderArticle() {
   renderArticles("income", tableIncomeInner, $incomeArticles);
   renderArticles("expenses", tableExpensesInner, $expensesArticles);
-  delBtns();
+  delBtnsArticle();
   settingsShow();
 }
 
@@ -25,8 +25,7 @@ function addArticle() {
     appData[$chooseNewArticle.value].push($articleName.value);
     localSt();
     $articleName.value = '';
-    render();
-    renderChooseArticle();
+    renderArticle();
   });
 }
 
@@ -45,7 +44,7 @@ function renderArticles(x, z, c) {
   c.innerHTML = z;
 }
 
-function delBtns() {
+function delBtnsArticle() {
   var $btnDeleteExpenses = document.querySelectorAll('.deleteexpenses');
   var $btnDeleteIncome = document.querySelectorAll('.deleteincome');
   function btnsAllArticles(x, y) {
@@ -53,7 +52,7 @@ function delBtns() {
       y[i].addEventListener('click', function btnDelete() {
         x.splice(i, 1);
         localSt();
-        render();
+        renderArticle();
         renderChooseArticle();
       });
     }
@@ -76,4 +75,4 @@ function settingsShow(){
   });
 }
 
-init();
+initArticle();
