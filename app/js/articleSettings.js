@@ -1,18 +1,18 @@
 let $incomeArticles = document.querySelector('.incomeArticles');
 let $expensesArticles = document.querySelector('.expensesArticles');
-let $btnArticles=document.querySelector('.js-articlesSettings');
-let $articles=document.querySelector('.articles');
+let $btnArticles = document.querySelector('.js-articlesSettings');
+let $articles = document.querySelector('.articles');
 let tableIncomeInner = '';
 let tableExpensesInner = '';
 
 function initArticle() {
   addArticle();
-  renderArticle();
+  renderChooseArticle();
 }
 
-function renderArticle() {
-  renderArticles("income", tableIncomeInner, $incomeArticles);
-  renderArticles("expenses", tableExpensesInner, $expensesArticles);
+function renderChooseArticle() {
+  renderArticlesTables("income", tableIncomeInner, $incomeArticles);
+  renderArticlesTables("expenses", tableExpensesInner, $expensesArticles);
   delBtnsArticle();
   settingsShow();
 }
@@ -25,21 +25,24 @@ function addArticle() {
     appData[$chooseNewArticle.value].push($articleName.value);
     localSt();
     $articleName.value = '';
-    renderArticle();
+    renderChooseArticle();
   });
 }
 
-function renderArticles(x, z, c) {
+function renderArticlesTables(x, z, c) {
+  let i = 1;
   for (let item of appData[x]) {
     if (item !== null) {
       // let divTableRow1 = "<div class=\"tableRow\">" + item + "</div>";
-      let divTableRow1 = `
-      <div class="tableRow">
-      ${item}
-      </div>`;
-      let divTableDelete = "<div class=\"tableRow\">" + "<button class=\"delete" + x + "\">" + "Удалить" + "</button>" + "</div>";
-      z += "<div>" + divTableRow1 + divTableDelete + "</div>";
+      // let divTableRow1 = `
+      // <div class="tableRow">
+      // ${item}
+      // </div>`;
+      // let divTableDelete = "<div class=\"tableRow\">" + "<button class=\"delete" + x + "\">" + "Удалить" + "</button>" + "</div>";
+      // z += "<div>" + divTableRow1 + divTableDelete + "</div>";
+      z += "<tr> <th>" + i + "</th> <td>" + item + "</td><td><button class=\"btn btn-primary delete" + x + "\">" + "Удалить" + "</button></td>";
     }
+    i++;
   }
   c.innerHTML = z;
 }
@@ -52,7 +55,6 @@ function delBtnsArticle() {
       y[i].addEventListener('click', function btnDelete() {
         x.splice(i, 1);
         localSt();
-        renderArticle();
         renderChooseArticle();
       });
     }
@@ -65,11 +67,11 @@ function delBtnsArticle() {
   }
 }
 
-function settingsShow(){  
-  $btnArticles.addEventListener('click', function articlesSettings(){    
-    if ($articles.style.display == 'block'){
+function settingsShow() {
+  $btnArticles.addEventListener('click', function articlesSettings() {
+    if ($articles.style.display == 'block') {
       $articles.style.display = 'none';
-    }else{
+    } else {
       $articles.style.display = 'block';
     }
   });

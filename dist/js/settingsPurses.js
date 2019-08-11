@@ -4,6 +4,8 @@ var $btnCreatPurse = document.querySelector('.js-btnCreatePurse');
 var $chooseClassPurse = document.querySelector('.js-chooseClassPurse');
 var $purseName = document.querySelector('.js-purseName');
 var $purseBalance = document.querySelector('.js-purseBalance');
+var $purses = document.querySelector('.purses');
+var $btnPurses = document.querySelector('.js-purseSettings');
 var delItemsPurses = [];
 var delItemsCards = [];
 var delItemsContributions = [];
@@ -21,6 +23,7 @@ function renderPurse() {
   delItemsMoneyBoxes = [];
   renderPurses();
   delBtnsPurses();
+  settingsShowPurses();
 }
 
 function initForm() {
@@ -112,6 +115,16 @@ function delBtnsPurses() {
   btnsAllMoneyStorage(appData.moneyStorage.card, $btnDeleteCards, delItemsCards);
   btnsAllMoneyStorage(appData.moneyStorage.contribution, $btnDeleteContributions, delItemsContributions);
   btnsAllMoneyStorage(appData.moneyStorage.moneybox, $btnDeleteMoneyboxs, delItemsMoneyBoxes);
+}
+
+function settingsShowPurses() {
+  $btnPurses.addEventListener('click', function pursesSettings() {
+    if ($purses.style.display == 'block') {
+      $purses.style.display = 'none';
+    } else {
+      $purses.style.display = 'block';
+    }
+  });
 }
 
 initPurses();

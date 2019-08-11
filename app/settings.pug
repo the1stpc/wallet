@@ -2,92 +2,116 @@ extends ../app/base/base.pug
 block data
   - var activePage = 'настройки';
 block main
-  h1 Настройки
-  .settingsMenu
-    button.js-articlesSettings Настроить категории доходов/расходов
-    button.js-purseSettings Настройки мест хранения денег
-  .articles
-    .newArticle
-      span Создать категорию  
-      span    
-      select(class="js-chooseNewArticle")
-        option(value="income") дохода
-        option(value="expenses") расхода
-      span  введите название 
-      input(class="js-articleName" type="text")
-      span  
-      input(class="js-btnCreateArticle" type="button" value="создать")
-    div.container 
-      div      
-        h2 Категории доходов
-        .incomeArticles    
-      div 
-        h2 Категории расходов
-        .expensesArticles      
-  br    
-  h2(align="center") Настройки мест хранения денег
-  br
-  div(class="form-group row")
-    .container-fluid
-      form(class="js-formPurses")
-        div.row
-          .col-12.col-md-1
-            h6(class="text-right") Новый
-          .col-12.col-md-2
-            select(class="js-chooseClassPurse form-control")
-              option(value="purse") кошелёк
-              option(value="card") карта
-              option(value="contribution") вклад
-              option(value="moneybox") копилка     
-          .col-12.col-md-4
-            input(class="js-purseName form-control" type="text" placeholder="введите название")
-          .col-12.col-md-4
-            input(class="js-purseBalance form-control" type="number" placeholder="введите сумму")
-          .col-12.col-md-1
-            input(class="js-btnCreatePurse btn btn-primary" type="button" value="создать")
-  div(class = "js-moneyStorageTable")
-    br
-    div.row
-      div.col
-        h2(align="center") Кошельки
-        table.table.table-bordered.table-hover
-          thead.thead-dark 
-            tr
-              th(scope="col")
-              th(scope="col") Название
-              th(scope="col") Сумма
-              th(scope="col") Управление
-          tbody.tablePurses          
-      div.col
-        h2(align="center") Карты
-        table.table.table-bordered.table-hover
-          thead.thead-dark 
-            tr
-              th(scope="col")
-              th(scope="col") Название
-              th(scope="col") Сумма
-              th(scope="col") Управление
-          tbody.tableCards                
-      div.col
-        h2(align="center") Вклады
-        table.table.table-bordered.table-hover
-          thead.thead-dark 
-            tr
-              th(scope="col")
-              th(scope="col") Название
-              th(scope="col") Сумма
-              th(scope="col") Управление
-          tbody.tableContributions                
-      div.col
-        h2(align="center") Копилки
-        table.table.table-bordered.table-hover
-          thead.thead-dark 
-            tr
-              th(scope="col")
-              th(scope="col") Название
-              th(scope="col") Сумма
-              th(scope="col") Управление
-          tbody.tableMoneyBoxes        
+  .row
+    .col-12.col-md-2.col-xl-2
+      h2 Настройки
+      .settingsMenu
+        button.js-articlesSettings Категории операций
+        button.js-purseSettings Хранилища денег
+    .col
+      .row.articles
+        .col.newArticle
+          br
+          h2(align="center") Настройки категориий операций
+          br
+          .form-group.row
+            .container-fluid
+              form.formArticles
+                .row
+                  .col-12.col-md-2
+                    span Создать категорию 
+                  .col-12.col-md-2 
+                    select.js-chooseNewArticle.form-control
+                      option(value="income") дохода
+                      option(value="expenses") расхода
+                  .col-12.col-md-4
+                    input(class="js-articleName form-control" type="text" placeholder="введите название")
+                  .col-12.col-md-4
+                    input(class="js-btnCreateArticle btn btn-primary" type="button" value="создать")
+          .row.articleTables
+            .col
+              h2(align="center") Категории доходов
+              table.table.table-bordered.table-hover
+                thead.thead-dark 
+                  tr
+                    th(scope="col")
+                    th(scope="col") Название
+                    th(scope="col") Сумма
+                tbody.incomeArticles        
+            .col
+              h2(align="center") Категории расходов
+              table.table.table-bordered.table-hover
+                thead.thead-dark 
+                  tr
+                    th(scope="col")
+                    th(scope="col") Название
+                    th(scope="col") Сумма
+                tbody.expensesArticles              
+        br
+      .row.purses 
+        .col            
+          h2(align="center") Настройки мест хранения денег
+          br
+          .form-group.row
+            .container-fluid
+              form.formPurses
+                .row
+                  .col-12.col-md-1
+                    h6.text-right Новый
+                  .col-12.col-md-2
+                    select.js-chooseClassPurse.form-control
+                      option(value="purse") кошелёк
+                      option(value="card") карта
+                      option(value="contribution") вклад
+                      option(value="moneybox") копилка     
+                  .col-12.col-md-4
+                    input(class="js-purseName form-control" type="text" placeholder="введите название")
+                  .col-12.col-md-4
+                    input(class="js-purseBalance form-control" type="number" placeholder="введите сумму")
+                  .col-12.col-md-1
+                    input(class="js-btnCreatePurse btn btn-primary" type="button" value="создать")         
+              br
+          .row.moneyStorageTable
+            .col
+              h2(align="center") Кошельки
+              table.table.table-bordered.table-hover
+                thead.thead-dark 
+                  tr
+                    th(scope="col")
+                    th(scope="col") Название
+                    th(scope="col") Сумма
+                    th(scope="col") Управление
+                tbody.tablePurses          
+            .col
+              h2(align="center") Карты
+              table.table.table-bordered.table-hover
+                thead.thead-dark 
+                  tr
+                    th(scope="col")
+                    th(scope="col") Название
+                    th(scope="col") Сумма
+                    th(scope="col") Управление
+                tbody.tableCards                
+            div.col
+              h2(align="center") Вклады
+              table.table.table-bordered.table-hover
+                thead.thead-dark 
+                  tr
+                    th(scope="col")
+                    th(scope="col") Название
+                    th(scope="col") Сумма
+                    th(scope="col") Управление
+                tbody.tableContributions                
+            div.col
+              h2(align="center") Копилки
+              table.table.table-bordered.table-hover
+                thead.thead-dark 
+                  tr
+                    th(scope="col")
+                    th(scope="col") Название
+                    th(scope="col") Сумма
+                    th(scope="col") Управление
+                tbody.tableMoneyBoxes        
 block append js        
   script(src="js/settingsPurses.js")
   script(src="js/articleSettings.js")

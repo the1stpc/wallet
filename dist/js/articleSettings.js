@@ -9,12 +9,12 @@ var tableExpensesInner = '';
 
 function initArticle() {
   addArticle();
-  renderArticle();
+  renderChooseArticle();
 }
 
-function renderArticle() {
-  renderArticles("income", tableIncomeInner, $incomeArticles);
-  renderArticles("expenses", tableExpensesInner, $expensesArticles);
+function renderChooseArticle() {
+  renderArticlesTables("income", tableIncomeInner, $incomeArticles);
+  renderArticlesTables("expenses", tableExpensesInner, $expensesArticles);
   delBtnsArticle();
   settingsShow();
 }
@@ -27,11 +27,12 @@ function addArticle() {
     appData[$chooseNewArticle.value].push($articleName.value);
     localSt();
     $articleName.value = '';
-    renderArticle();
+    renderChooseArticle();
   });
 }
 
-function renderArticles(x, z, c) {
+function renderArticlesTables(x, z, c) {
+  var i = 1;
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
@@ -42,10 +43,16 @@ function renderArticles(x, z, c) {
 
       if (item !== null) {
         // let divTableRow1 = "<div class=\"tableRow\">" + item + "</div>";
-        var divTableRow1 = "\n      <div class=\"tableRow\">\n      ".concat(item, "\n      </div>");
-        var divTableDelete = "<div class=\"tableRow\">" + "<button class=\"delete" + x + "\">" + "Удалить" + "</button>" + "</div>";
-        z += "<div>" + divTableRow1 + divTableDelete + "</div>";
+        // let divTableRow1 = `
+        // <div class="tableRow">
+        // ${item}
+        // </div>`;
+        // let divTableDelete = "<div class=\"tableRow\">" + "<button class=\"delete" + x + "\">" + "Удалить" + "</button>" + "</div>";
+        // z += "<div>" + divTableRow1 + divTableDelete + "</div>";
+        z += "<tr> <th>" + i + "</th> <td>" + item + "</td><td><button class=\"btn btn-primary delete" + x + "\">" + "Удалить" + "</button></td>";
       }
+
+      i++;
     }
   } catch (err) {
     _didIteratorError = true;
@@ -74,7 +81,6 @@ function delBtnsArticle() {
       y[i].addEventListener('click', function btnDelete() {
         x.splice(i, 1);
         localSt();
-        renderArticle();
         renderChooseArticle();
       });
     };
