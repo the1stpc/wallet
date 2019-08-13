@@ -4,18 +4,10 @@ var nameMonth = ["января", "февраля", "марта", "апреля",
 var weekDay = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
 var appData = {
   dates: {},
-  moneyStorage: {
-    purse: {},
-    contribution: {},
-    card: {},
-    moneybox: {}
-  },
+  moneyStorage: [],
   income: [],
   expenses: [],
-  arrears: {
-    creditors: {},
-    borrowers: {}
-  }
+  arrears: []
 };
 
 function getFloat(numberFloat) {

@@ -2,14 +2,47 @@ extends ../app/base/base.pug
 block data
   - var activePage = 'операции';
 block main
-  .Title 
-    h1 Операции
-  .operationBlock
-    .blockOperations
-      select(class="js-chooseArticle")
+  .title.row
+    .col 
+      h1(align="center") Создать операцию
+  .form-group.row
+    .col
+      select.js-chooseArticle.form-control
         option(value="newIncome") Доход от
         option(value="newExpense") Потратить на
-      select(class="js-chooseArticlesName")
-    .operationInfo
+    .col
+      select.js-chooseArticlesName.form-control
+    .col
+      select.js-choosePurses.form-control  
+    .col  
+      input(class="js-operationValue form-control" type="number" placeholder="введите сумму")
+    .col
+      input(class="js-btnCreateOperation btn btn-primary" type="button" value="создать")   
+  .title.row
+    .col
+      h1(align="center") Операции
+  .row.operationInfo
+    .col
+      h2(align="center") Доходы
+      table.table.table-bordered.table-hover
+        thead.thead-dark 
+          tr
+            th(scope="col") Дата
+            th(scope="col") Категория
+            th(scope="col") Куда
+            th(scope="col") Сумма
+            th(scope="col") Управление
+        tbody.tableOperationsIncome 
+    .col
+      h2(align="center") Расходы
+      table.table.table-bordered.table-hover
+        thead.thead-dark 
+          tr
+            th(scope="col") Дата
+            th(scope="col") Категория
+            th(scope="col") Откуда
+            th(scope="col") Сумма
+            th(scope="col") Управление
+        tbody.tableOperationsExpenses             
 block append js   
   script(src="js/operations.js")

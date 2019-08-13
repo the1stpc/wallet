@@ -10,3 +10,6 @@
 
 .myLinks {
   color: white; }
+
+.myLinks:hover {
+  color: grey; }

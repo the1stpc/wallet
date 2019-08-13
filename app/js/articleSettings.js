@@ -33,13 +33,6 @@ function renderArticlesTables(x, z, c) {
   let i = 1;
   for (let item of appData[x]) {
     if (item !== null) {
-      // let divTableRow1 = "<div class=\"tableRow\">" + item + "</div>";
-      // let divTableRow1 = `
-      // <div class="tableRow">
-      // ${item}
-      // </div>`;
-      // let divTableDelete = "<div class=\"tableRow\">" + "<button class=\"delete" + x + "\">" + "Удалить" + "</button>" + "</div>";
-      // z += "<div>" + divTableRow1 + divTableDelete + "</div>";
       z += "<tr> <th>" + i + "</th> <td>" + item + "</td><td><button class=\"btn btn-primary delete" + x + "\">" + "Удалить" + "</button></td>";
     }
     i++;

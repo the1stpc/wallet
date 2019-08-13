@@ -6,10 +6,22 @@ var $purseName = document.querySelector('.js-purseName');
 var $purseBalance = document.querySelector('.js-purseBalance');
 var $purses = document.querySelector('.purses');
 var $btnPurses = document.querySelector('.js-purseSettings');
-var delItemsPurses = [];
-var delItemsCards = [];
-var delItemsContributions = [];
-var delItemsMoneyBoxes = [];
+var purses, cards, contributions, moneyboxes;
+
+function filterMoneyStorage() {
+  purses = appData.moneyStorage.filter(function (a) {
+    return a.type == 'purse';
+  });
+  cards = appData.moneyStorage.filter(function (a) {
+    return a.type == 'card';
+  });
+  contributions = appData.moneyStorage.filter(function (a) {
+    return a.type == 'contribution';
+  });
+  moneyboxes = appData.moneyStorage.filter(function (a) {
+    return a.type == 'moneybox';
+  });
+}
 
 function initPurses() {
   initForm();
@@ -17,10 +29,7 @@ function initPurses() {
 }
 
 function renderPurse() {
-  delItemsPurses = [];
-  delItemsCards = [];
-  delItemsContributions = [];
-  delItemsMoneyBoxes = [];
+  filterMoneyStorage();
   renderPurses();
   delBtnsPurses();
   settingsShowPurses();
@@ -29,9 +38,15 @@ function renderPurse() {
 function initForm() {
   $btnCreatPurse.addEventListener('click', function btnCreatPurse() {
     if ($purseName.value && $purseBalance.value !== '') {
-      appData.moneyStorage[$chooseClassPurse.value][$purseName.value] = getFloat($purseBalance.value);
+      appData.moneyStorage.push({
+        type: $chooseClassPurse.value,
+        name: $purseName.value,
+        value: getFloat($purseBalance.value)
+      });
       localSt();
       renderPurse();
+      $purseName.value = "";
+      $purseBalance.value = "";
     } else {
       $purseBalance.style.border = 'border: 2px red';
     }
@@ -39,8 +54,6 @@ function initForm() {
 }
 
 function renderPurses() {
-  $purseName.value = "";
-  $purseBalance.value = "";
   var $tablePurses = document.querySelector('.tablePurses');
   var $tableCards = document.querySelector('.tableCards');
   var $tableContributions = document.querySelector('.tableContributions');
@@ -51,44 +64,19 @@ function renderPurses() {
   var tablemoneyBoxesInner = '';
 
   function tableRender(x, z, c, zz) {
-    var i = 1;
-
-    for (var _i = 0, _Object$keys = Object.keys(x); _i < _Object$keys.length; _i++) {
-      var item = _Object$keys[_i];
-
+    x.forEach(function (item, i) {
       if (item !== null) {
-        z += "<tr> <th>" + i + "</th> <td>" + item + "</td><td>" + x[item] + "</td><td><button class=\"btn btn-primary delete" + zz + "\">" + "Удалить" + "</button></td>";
-
-        switch (x) {
-          case appData.moneyStorage.purse:
-            delItemsPurses.push(item);
-            break;
-
-          case appData.moneyStorage.card:
-            delItemsCards.push(item);
-            break;
-
-          case appData.moneyStorage.contribution:
-            delItemsContributions.push(item);
-            break;
-
-          case appData.moneyStorage.moneybox:
-            delItemsMoneyBoxes.push(item);
-            break;
-        }
+        z += "<tr>\n          <th>".concat(i + 1, "</th>\n          <td>").concat(item.name, "</td>\n          <td>").concat(item.value, "</td>\n          <td><button class=\"btn btn-primary delete").concat(zz, "\"> \u0423\u0434\u0430\u043B\u0438\u0442\u044C </button></td>");
       }
-
-      i++;
-    }
-
+    });
     z += "</tr>";
     c.innerHTML = z;
   }
 
-  tableRender(appData.moneyStorage.purse, tablePursesInner, $tablePurses, "Purses");
-  tableRender(appData.moneyStorage.card, tableCardsInner, $tableCards, "Cards");
-  tableRender(appData.moneyStorage.contribution, tableContributionsInner, $tableContributions, "Contributions");
-  tableRender(appData.moneyStorage.moneybox, tablemoneyBoxesInner, $tableMoneyBoxes, "Moneyboxs");
+  tableRender(purses, tablePursesInner, $tablePurses, "Purses");
+  tableRender(cards, tableCardsInner, $tableCards, "Cards");
+  tableRender(contributions, tableContributionsInner, $tableContributions, "Contributions");
+  tableRender(moneyboxes, tablemoneyBoxesInner, $tableMoneyBoxes, "Moneyboxs");
 }
 
 function delBtnsPurses() {
@@ -98,23 +86,21 @@ function delBtnsPurses() {
   var $btnDeleteMoneyboxs = document.querySelectorAll('.deleteMoneyboxs');
 
   function btnsAllMoneyStorage(x, y, c) {
-    var _loop = function _loop(i) {
+    x.forEach(function (item, i) {
       y[i].addEventListener('click', function btnDelete() {
-        delete x[c[i]];
+        delete item.type;
+        delete item.name;
+        delete item.value;
         localSt();
         renderPurse();
       });
-    };
-
-    for (var i = 0; i < Object.keys(x).length; i++) {
-      _loop(i);
-    }
+    });
   }
 
-  btnsAllMoneyStorage(appData.moneyStorage.purse, $btnDeletePurses, delItemsPurses);
-  btnsAllMoneyStorage(appData.moneyStorage.card, $btnDeleteCards, delItemsCards);
-  btnsAllMoneyStorage(appData.moneyStorage.contribution, $btnDeleteContributions, delItemsContributions);
-  btnsAllMoneyStorage(appData.moneyStorage.moneybox, $btnDeleteMoneyboxs, delItemsMoneyBoxes);
+  btnsAllMoneyStorage(purses, $btnDeletePurses);
+  btnsAllMoneyStorage(cards, $btnDeleteCards);
+  btnsAllMoneyStorage(contributions, $btnDeleteContributions);
+  btnsAllMoneyStorage(moneyboxes, $btnDeleteMoneyboxs);
 }
 
 function settingsShowPurses() {

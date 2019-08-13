@@ -2,23 +2,32 @@ let $btnCreatPurse = document.querySelector('.js-btnCreatePurse');
 let $chooseClassPurse = document.querySelector('.js-chooseClassPurse');
 let $purseName = document.querySelector('.js-purseName');
 let $purseBalance = document.querySelector('.js-purseBalance');
-let $purses=document.querySelector('.purses');
-let $btnPurses=document.querySelector('.js-purseSettings');
-let delItemsPurses = [];
-let delItemsCards = [];
-let delItemsContributions = [];
-let delItemsMoneyBoxes = [];
+let $purses = document.querySelector('.purses');
+let $btnPurses = document.querySelector('.js-purseSettings');
+let purses, cards, contributions, moneyboxes;
 
-function initPurses(){
+function filterMoneyStorage(){
+purses = appData.moneyStorage.filter(function (a) {
+  return a.type == `${'purse'}`;
+});
+cards = appData.moneyStorage.filter(function (a) {
+  return a.type == `${'card'}`;
+});
+contributions = appData.moneyStorage.filter(function (a) {
+  return a.type == `${'contribution'}`;
+});
+moneyboxes = appData.moneyStorage.filter(function (a) {
+  return a.type == `${'moneybox'}`;
+});
+}
+
+function initPurses() {
   initForm();
   renderPurse();
 }
 
 function renderPurse() {
-  delItemsPurses = [];
-  delItemsCards = [];
-  delItemsContributions = [];
-  delItemsMoneyBoxes = [];
+  filterMoneyStorage();
   renderPurses();
   delBtnsPurses();
   settingsShowPurses();
@@ -26,19 +35,19 @@ function renderPurse() {
 
 function initForm() {
   $btnCreatPurse.addEventListener('click', function btnCreatPurse() {
-    if ($purseName.value && $purseBalance.value !== ''){
-    appData.moneyStorage[$chooseClassPurse.value][$purseName.value]= getFloat($purseBalance.value);
-    localSt();
-    renderPurse();  
-  }else{
-    $purseBalance.style.border = 'border: 2px red';
-  }
+    if ($purseName.value && $purseBalance.value !== '') {
+      appData.moneyStorage.push({ type: $chooseClassPurse.value, name: $purseName.value, value: getFloat($purseBalance.value) });
+      localSt();
+      renderPurse();
+      $purseName.value = "";
+      $purseBalance.value = "";
+    } else {
+      $purseBalance.style.border = 'border: 2px red';
+    }
   });
 }
 
 function renderPurses() {
-  $purseName.value = "";
-  $purseBalance.value = "";
   let $tablePurses = document.querySelector('.tablePurses')
   let $tableCards = document.querySelector('.tableCards')
   let $tableContributions = document.querySelector('.tableContributions')
@@ -47,38 +56,23 @@ function renderPurses() {
   let tableCardsInner = '';
   let tableContributionsInner = '';
   let tablemoneyBoxesInner = '';
-
-
   function tableRender(x, z, c, zz) {
-    let i = 1;
-    for (var item of Object.keys(x)) {
+    x.forEach(function (item, i) {
       if (item !== null) {
-        z+= "<tr> <th>"+i+"</th> <td>"+item+"</td><td>"+x[item]+"</td><td><button class=\"btn btn-primary delete" + zz + "\">" + "Удалить" + "</button></td>";
-        switch (x) {
-          case appData.moneyStorage.purse:
-            delItemsPurses.push(item);
-            break;
-          case appData.moneyStorage.card:
-            delItemsCards.push(item);
-            break;
-          case appData.moneyStorage.contribution:
-            delItemsContributions.push(item);
-            break;
-          case appData.moneyStorage.moneybox:
-            delItemsMoneyBoxes.push(item);
-            break;
-        }
-      }      
-      i++;
-    }
-    z+="</tr>"
+        z += `<tr>
+          <th>${i + 1}</th>
+          <td>${item.name}</td>
+          <td>${item.value}</td>
+          <td><button class="btn btn-primary delete${zz}"> Удалить </button></td>`;
+      }
+    });
+    z += "</tr>"
     c.innerHTML = z;
   }
-
-  tableRender(appData.moneyStorage.purse, tablePursesInner, $tablePurses, "Purses");
-  tableRender(appData.moneyStorage.card, tableCardsInner, $tableCards, "Cards");
-  tableRender(appData.moneyStorage.contribution, tableContributionsInner, $tableContributions, "Contributions");
-  tableRender(appData.moneyStorage.moneybox, tablemoneyBoxesInner, $tableMoneyBoxes, "Moneyboxs");
+  tableRender(purses, tablePursesInner, $tablePurses, "Purses");
+  tableRender(cards, tableCardsInner, $tableCards, "Cards");
+  tableRender(contributions, tableContributionsInner, $tableContributions, "Contributions");
+  tableRender(moneyboxes, tablemoneyBoxesInner, $tableMoneyBoxes, "Moneyboxs");
 }
 
 function delBtnsPurses() {
@@ -87,32 +81,33 @@ function delBtnsPurses() {
   var $btnDeleteContributions = document.querySelectorAll('.deleteContributions');
   var $btnDeleteMoneyboxs = document.querySelectorAll('.deleteMoneyboxs');
   function btnsAllMoneyStorage(x, y, c) {
-    for (let i = 0; i < Object.keys(x).length; i++) {
+    x.forEach(function (item, i) {
       y[i].addEventListener('click', function btnDelete() {
-        delete x[c[i]];
+        delete item.type;
+        delete item.name;
+        delete item.value;
         localSt();
         renderPurse();
       });
-    }
+    });
   }
-  btnsAllMoneyStorage(appData.moneyStorage.purse, $btnDeletePurses, delItemsPurses);
-  btnsAllMoneyStorage(appData.moneyStorage.card, $btnDeleteCards, delItemsCards);
-  btnsAllMoneyStorage(appData.moneyStorage.contribution, $btnDeleteContributions, delItemsContributions);
-  btnsAllMoneyStorage(appData.moneyStorage.moneybox, $btnDeleteMoneyboxs, delItemsMoneyBoxes);
+  btnsAllMoneyStorage(purses, $btnDeletePurses);
+  btnsAllMoneyStorage(cards, $btnDeleteCards);
+  btnsAllMoneyStorage(contributions, $btnDeleteContributions);
+  btnsAllMoneyStorage(moneyboxes, $btnDeleteMoneyboxs);
 }
 
-function settingsShowPurses(){  
-  $btnPurses.addEventListener('click', function pursesSettings(){    
-    if ($purses.style.display == 'block'){
+function settingsShowPurses() {
+  $btnPurses.addEventListener('click', function pursesSettings() {
+    if ($purses.style.display == 'block') {
       $purses.style.display = 'none';
-    }else{
+    } else {
       $purses.style.display = 'block';
     }
   });
 }
 
 initPurses();
-
 
 
 

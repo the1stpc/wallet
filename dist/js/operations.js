@@ -2,9 +2,11 @@
 
 var $chooseArticle = document.querySelector('.js-chooseArticle');
 var $chooseArticlesName = document.querySelector('.js-chooseArticlesName');
+var $choosePurses = document.querySelector('.js-choosePurses');
 
-function init() {
+function initOperations() {
   renderChooseArticle();
+  renderChoosePurse();
 }
 
 function renderChooseArticle() {
@@ -98,4 +100,95 @@ function renderChooseArticle() {
   });
 }
 
-init();
+function renderChoosePurse() {
+  var z = '';
+  var _iteratorNormalCompletion4 = true;
+  var _didIteratorError4 = false;
+  var _iteratorError4 = undefined;
+
+  try {
+    for (var _iterator4 = appData.income[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+      var item = _step4.value;
+      var $option = "<option value=" + item + ">" + item + "</option>";
+      z += $option;
+    }
+  } catch (err) {
+    _didIteratorError4 = true;
+    _iteratorError4 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+        _iterator4["return"]();
+      }
+    } finally {
+      if (_didIteratorError4) {
+        throw _iteratorError4;
+      }
+    }
+  }
+
+  $chooseArticlesName.innerHTML = z;
+  $chooseArticle.addEventListener('change', function Change() {
+    if ($chooseArticle.value == 'newIncome') {
+      z = '';
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
+
+      try {
+        for (var _iterator5 = appData.income[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          var item = _step5.value;
+          var $option = "<option value=" + item + ">" + item + "</option>";
+          z += $option;
+        }
+      } catch (err) {
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
+            _iterator5["return"]();
+          }
+        } finally {
+          if (_didIteratorError5) {
+            throw _iteratorError5;
+          }
+        }
+      }
+
+      $chooseArticlesName.innerHTML = z;
+    } else {
+      z = '';
+      var _iteratorNormalCompletion6 = true;
+      var _didIteratorError6 = false;
+      var _iteratorError6 = undefined;
+
+      try {
+        for (var _iterator6 = appData.expenses[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+          var _item2 = _step6.value;
+
+          var _$option2 = "<option value=" + _item2 + ">" + _item2 + "</option>";
+
+          z += _$option2;
+        }
+      } catch (err) {
+        _didIteratorError6 = true;
+        _iteratorError6 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion6 && _iterator6["return"] != null) {
+            _iterator6["return"]();
+          }
+        } finally {
+          if (_didIteratorError6) {
+            throw _iteratorError6;
+          }
+        }
+      }
+
+      $chooseArticlesName.innerHTML = z;
+    }
+  });
+}
+
+initOperations();

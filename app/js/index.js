@@ -3,35 +3,27 @@ let weekDay = ["Воскресенье", "Понедельник", "Вторни
 
 var appData = {
   dates: {},
-  moneyStorage: {
-    purse: {},
-    contribution: {},
-    card: {},
-    moneybox: {}
-  },
+  moneyStorage: [],
   income: [],
   expenses: [],
-  arrears: {
-    creditors: {},
-    borrowers: {},
-  }
+  arrears: []
 };
 
-function getFloat(numberFloat) {  
+function getFloat(numberFloat) {
   return parseFloat(numberFloat).toFixed(2);
 }
 
-function localSt(){
+function localSt() {
   let serialObj = JSON.stringify(appData);
   localStorage.setItem("myKey", serialObj);
   return serialObj;
 }
 
-function start() { 
+function start() {
 
-  function getAppData(){
+  function getAppData() {
     if (localStorage.getItem("myKey") !== null)
-    appData = JSON.parse(localStorage.getItem("myKey"))
+      appData = JSON.parse(localStorage.getItem("myKey"))
     return appData;
   }
 
