@@ -6,19 +6,19 @@ let $purses = document.querySelector('.purses');
 let $btnPurses = document.querySelector('.js-purseSettings');
 let purses, cards, contributions, moneyboxes;
 
-function filterMoneyStorage(){
-purses = appData.moneyStorage.filter(function (a) {
-  return a.type == `${'purse'}`;
-});
-cards = appData.moneyStorage.filter(function (a) {
-  return a.type == `${'card'}`;
-});
-contributions = appData.moneyStorage.filter(function (a) {
-  return a.type == `${'contribution'}`;
-});
-moneyboxes = appData.moneyStorage.filter(function (a) {
-  return a.type == `${'moneybox'}`;
-});
+function filterMoneyStorage() {
+  purses = appData.moneyStorage.filter(function (a) {
+    return a.type == `${'purse'}`;
+  });
+  cards = appData.moneyStorage.filter(function (a) {
+    return a.type == `${'card'}`;
+  });
+  contributions = appData.moneyStorage.filter(function (a) {
+    return a.type == `${'contribution'}`;
+  });
+  moneyboxes = appData.moneyStorage.filter(function (a) {
+    return a.type == `${'moneybox'}`;
+  });
 }
 
 function initPurses() {

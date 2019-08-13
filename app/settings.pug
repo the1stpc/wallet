@@ -6,8 +6,11 @@ block main
     .col-12.col-md-2.col-xl-2
       h2 Настройки
       .settingsMenu
-        button.js-articlesSettings Категории операций
-        button.js-purseSettings Хранилища денег
+        .row
+          button.js-articlesSettings.btn.btn-primary.btn-lg.btn-block Категории операций
+        br
+        .row
+          button.js-purseSettings.btn.btn-primary.btn-lg.btn-block Счета
     .col
       .row.articles
         .col.newArticle
@@ -50,7 +53,7 @@ block main
         br
       .row.purses 
         .col            
-          h2(align="center") Настройки мест хранения денег
+          h2(align="center") Настройки счетов
           br
           .form-group.row
             .container-fluid

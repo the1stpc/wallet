@@ -3,10 +3,37 @@
 var $chooseArticle = document.querySelector('.js-chooseArticle');
 var $chooseArticlesName = document.querySelector('.js-chooseArticlesName');
 var $choosePurses = document.querySelector('.js-choosePurses');
+var $chooseCards = document.querySelector('.js-chooseCards');
+var $chooseContributions = document.querySelector('.js-chooseContributions');
+var $chooseMoneyBoxes = document.querySelector('.js-chooseMoneyBoxes');
+var purses, cards, contributions, moneyboxes;
+var tablePursesInner = '';
+var tableCardsInner = '';
+var tableContributionsInner = '';
+var tableMoneyBoxesInner = '';
 
 function initOperations() {
+  filterMoneyStorage();
   renderChooseArticle();
-  renderChoosePurse();
+  renderChoosePurse(purses, tablePursesInner, $choosePurses);
+  renderChoosePurse(cards, tableCardsInner, $chooseCards);
+  renderChoosePurse(contributions, tableContributionsInner, $chooseContributions);
+  renderChoosePurse(moneyboxes, tableMoneyBoxesInner, $chooseMoneyBoxes);
+}
+
+function filterMoneyStorage() {
+  purses = appData.moneyStorage.filter(function (a) {
+    return a.type == 'purse';
+  });
+  cards = appData.moneyStorage.filter(function (a) {
+    return a.type == 'card';
+  });
+  contributions = appData.moneyStorage.filter(function (a) {
+    return a.type == 'contribution';
+  });
+  moneyboxes = appData.moneyStorage.filter(function (a) {
+    return a.type == 'moneybox';
+  });
 }
 
 function renderChooseArticle() {
@@ -100,95 +127,14 @@ function renderChooseArticle() {
   });
 }
 
-function renderChoosePurse() {
-  var z = '';
-  var _iteratorNormalCompletion4 = true;
-  var _didIteratorError4 = false;
-  var _iteratorError4 = undefined;
-
-  try {
-    for (var _iterator4 = appData.income[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-      var item = _step4.value;
-      var $option = "<option value=" + item + ">" + item + "</option>";
-      z += $option;
-    }
-  } catch (err) {
-    _didIteratorError4 = true;
-    _iteratorError4 = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
-        _iterator4["return"]();
-      }
-    } finally {
-      if (_didIteratorError4) {
-        throw _iteratorError4;
-      }
-    }
-  }
-
-  $chooseArticlesName.innerHTML = z;
-  $chooseArticle.addEventListener('change', function Change() {
-    if ($chooseArticle.value == 'newIncome') {
-      z = '';
-      var _iteratorNormalCompletion5 = true;
-      var _didIteratorError5 = false;
-      var _iteratorError5 = undefined;
-
-      try {
-        for (var _iterator5 = appData.income[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          var item = _step5.value;
-          var $option = "<option value=" + item + ">" + item + "</option>";
-          z += $option;
-        }
-      } catch (err) {
-        _didIteratorError5 = true;
-        _iteratorError5 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
-            _iterator5["return"]();
-          }
-        } finally {
-          if (_didIteratorError5) {
-            throw _iteratorError5;
-          }
-        }
-      }
-
-      $chooseArticlesName.innerHTML = z;
-    } else {
-      z = '';
-      var _iteratorNormalCompletion6 = true;
-      var _didIteratorError6 = false;
-      var _iteratorError6 = undefined;
-
-      try {
-        for (var _iterator6 = appData.expenses[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-          var _item2 = _step6.value;
-
-          var _$option2 = "<option value=" + _item2 + ">" + _item2 + "</option>";
-
-          z += _$option2;
-        }
-      } catch (err) {
-        _didIteratorError6 = true;
-        _iteratorError6 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion6 && _iterator6["return"] != null) {
-            _iterator6["return"]();
-          }
-        } finally {
-          if (_didIteratorError6) {
-            throw _iteratorError6;
-          }
-        }
-      }
-
-      $chooseArticlesName.innerHTML = z;
-    }
+function renderChoosePurse(array, content, place) {
+  var i = 1;
+  content = '';
+  array.forEach(function (element) {
+    content += "<div class=\"col\">\n      <input class=\"".concat(element.type, " form-check-input myInputRadio\" name=\"moneyStorages\" value=\"").concat(element.type, "\" type=\"radio\">\n      <label class=\"form-check-label myLabel\" for=\"moneyStorages").concat(i + 1, "\">").concat(element.name, " ").concat(element.value, "</label>\n      </div>\n      \n    ");
+    i++;
   });
+  place.innerHTML = content;
 }
 
 initOperations();

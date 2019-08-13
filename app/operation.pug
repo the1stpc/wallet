@@ -5,19 +5,27 @@ block main
   .title.row
     .col 
       h1(align="center") Создать операцию
-  .form-group.row
-    .col
-      select.js-chooseArticle.form-control
-        option(value="newIncome") Доход от
-        option(value="newExpense") Потратить на
-    .col
-      select.js-chooseArticlesName.form-control
-    .col
-      select.js-choosePurses.form-control  
-    .col  
-      input(class="js-operationValue form-control" type="number" placeholder="введите сумму")
-    .col
-      input(class="js-btnCreateOperation btn btn-primary" type="button" value="создать")   
+  .form-group
+    .row
+      .col
+        select.js-chooseArticle.form-control
+          option(value="newIncome") Доход от
+          option(value="newExpense") Потратить на
+      .col
+        select.js-chooseArticlesName.form-control
+      .col  
+        input(class="js-operationValue form-control" type="number" placeholder="введите сумму")
+      .col
+        input(class="js-btnCreateOperation btn btn-primary" type="button" value="создать")   
+    .row
+      .col 
+        .js-choosePurses.form-check
+      .col  
+        .js-chooseCards.form-check
+      .col  
+        .js-chooseContributions.form-check
+      .col  
+        .js-chooseMoneyBoxes.form-check
   .title.row
     .col
       h1(align="center") Операции
