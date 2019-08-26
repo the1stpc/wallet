@@ -23,7 +23,7 @@ function pug() {
 }
 
 function sass() {
-    return gulp.src('./app/**/*.sass')
+    return gulp.src('./app/**/*.scss')
         .pipe(gSass())
         .pipe(gulp.dest('./dist'))
         .pipe(gBrowserSync.stream());
@@ -36,7 +36,7 @@ function server() {
 
     gulp.watch("app/**/*.js", js);
     gulp.watch("app/**/*.pug", pug);
-    gulp.watch("app/**/*.sass", sass);
+    gulp.watch("app/**/*.scss", sass);
     // gulp.watch("app/*.html").on('change', gBrowserSync.reload);
 }
 

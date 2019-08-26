@@ -48,7 +48,7 @@ function initForm() {
       $purseName.value = "";
       $purseBalance.value = "";
     } else {
-      $purseBalance.style.border = 'border: 2px red';
+      alert('Заполните поля!');
     }
   });
 }
@@ -79,18 +79,24 @@ function renderPurses() {
   tableRender(moneyboxes, tablemoneyBoxesInner, $tableMoneyBoxes, "Moneyboxs");
 }
 
+function delItemArr(array, item) {
+  array.forEach(function (element, i) {
+    if (element.name == item) {
+      array.splice(i, 1);
+    }
+  });
+}
+
 function delBtnsPurses() {
   var $btnDeletePurses = document.querySelectorAll('.deletePurses');
   var $btnDeleteCards = document.querySelectorAll('.deleteCards');
   var $btnDeleteContributions = document.querySelectorAll('.deleteContributions');
   var $btnDeleteMoneyboxs = document.querySelectorAll('.deleteMoneyboxs');
 
-  function btnsAllMoneyStorage(x, y, c) {
+  function btnsAllMoneyStorage(x, y) {
     x.forEach(function (item, i) {
       y[i].addEventListener('click', function btnDelete() {
-        delete item.type;
-        delete item.name;
-        delete item.value;
+        delItemArr(appData.moneyStorage, item.name);
         localSt();
         renderPurse();
       });

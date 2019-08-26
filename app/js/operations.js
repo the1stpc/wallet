@@ -1,23 +1,32 @@
 let $chooseArticle = document.querySelector('.js-chooseArticle');
 let $chooseArticlesName = document.querySelector('.js-chooseArticlesName');
-let $choosePurses = document.querySelector('.js-choosePurses');
-let $chooseCards = document.querySelector('.js-chooseCards');
-let $chooseContributions = document.querySelector('.js-chooseContributions');
-let $chooseMoneyBoxes = document.querySelector('.js-chooseMoneyBoxes');
+let $chooseAccounts = document.querySelector('.js-chooseAccounts');
 let purses, cards, contributions, moneyboxes;
-let tablePursesInner = '';
-let tableCardsInner = '';
-let tableContributionsInner = '';
-let tableMoneyBoxesInner = '';
+let chooseAccountsInner = '';
+let $BtnCreateOperation = document.querySelector('.js-btnCreateOperation');
+let $operationValue = document.querySelector('.js-operationValue');
+let $accountValues = document.getElementsByName('moneyStorages');
+let $accountValue;
 
 function initOperations() {
   filterMoneyStorage();
+  filterTransaction();
+  createOperation();
   renderChooseArticle();
-  renderChoosePurse(purses,tablePursesInner,$choosePurses);
-  renderChoosePurse(cards,tableCardsInner,$chooseCards);
-  renderChoosePurse(contributions,tableContributionsInner, $chooseContributions);
-  renderChoosePurse(moneyboxes,tableMoneyBoxesInner, $chooseMoneyBoxes);
+  renderAllaccount();
+  renderTransaction();
 }
+
+let incomeFilter, epxenseFilter;
+function filterTransaction() {
+  incomeFilter = appData.transaction.filter(function (a) {
+    return a.type == `${'income'}`;
+  });
+  epxenseFilter = appData.transaction.filter(function (a) {
+    return a.type == `${'expense'}`;
+  });
+}
+
 
 function filterMoneyStorage() {
   purses = appData.moneyStorage.filter(function (a) {
@@ -60,20 +69,87 @@ function renderChooseArticle() {
   });
 }
 
-function renderChoosePurse(array, content, place) {
-  let i = 1;
-  content = '';
-  array.forEach(element => {
-    content += `<div class="col">
-      <input class="${element.type} form-check-input myInputRadio" name="moneyStorages" value="${element.type}" type="radio">
-      <label class="form-check-label myLabel" for="moneyStorages${i+1}">${element.name} ${element.value}</label>
-      </div>
-      
-    `    
-    i++;
-  });
-  place.innerHTML = content;
-
+function renderAllaccount() {
+  renderChoosePurse(purses);
+  renderChoosePurse(cards);
+  renderChoosePurse(contributions);
+  renderChoosePurse(moneyboxes);
+  $chooseAccounts.innerHTML = `<div class="cc-selector">
+  ${chooseAccountsInner}
+  </div>`;
 }
+
+
+function renderChoosePurse(array) {
+  array.forEach((element, i) => {
+    chooseAccountsInner += ` <input id="${element.type}${i}" name="moneyStorages" value="${element.name}" data-value2="${element.value}" type="radio">
+    <label class="drinkcard-cc ${element.type}Radio" for="${element.type}${i}" value="${element.name}" data-value2="${element.value}"><span class="textBottom">${element.name} ${element.value}</span></label>`;
+  });
+}
+
+function createOperation() {
+  $BtnCreateOperation.addEventListener('click', function () {
+    $accountValues.forEach((element, i) => {
+      if ($accountValues[i].checked == true) {
+        $accountValue = $accountValues[i];
+      }
+    });
+    if ($chooseArticle.value == 'newIncome') {
+      appData.transaction.push({ type: 'income', date: new Date(), account: $accountValue.value, article: $chooseArticlesName.value, value: $operationValue.value });
+      appData.moneyStorage.forEach((element, i) => {
+        if (element.name == $accountValue.value) {
+          appData.moneyStorage[i].value = getFloat($accountValue.dataset.value2) + getFloat($operationValue.value);
+        }
+      });
+    } else {
+      appData.transaction.push({ type: 'expense', date: new Date(), account: $accountValue.value, article: $chooseArticlesName.value, value: $operationValue.value });
+      appData.moneyStorage.forEach((element, i) => {
+        if (element.name == $accountValue.value) {
+          appData.moneyStorage[i].value = getFloat($accountValue.dataset.value2) - getFloat($operationValue.value);
+        }
+      });
+    }
+    localSt();
+    chooseAccountsInner = '';
+    $operationValue.value = '';
+    renderChooseArticle();
+    renderAllaccount();
+  });
+};
+
+function renderTransaction() {
+
+  let $tableOperationsIncome = document.querySelector('.tableOperationsIncome');
+  let $tableOperationsExpenses = document.querySelector('.tableOperationsExpenses');
+  let tableOperationsExpensesInner, tableOperationsIncomeInner;
+  function tableRenderTransaction(array, innerBox, innerPlace) {
+    array.forEach((element, i) => {
+      if (element !== null) {
+        innerBox += `
+        <tr>
+        <th>${i + 1}</th>
+        <td>${element.date}</td>
+        <td>${element.account}</td>
+        <td>${element.article}</td>
+        <td>${element.value}</td>
+        <td><button class="btn btn-primary delete${element.type}"> Удалить </button></td>
+        `
+      }
+    });
+    innerBox += `</tr>`;
+    innerPlace.innerHTML = innerBox;
+  }
+  if (incomeFilter.length !== 0) {
+    tableRenderTransaction(incomeFilter, tableOperationsIncomeInner, $tableOperationsIncome);
+  }else {
+    $tableOperationsIncome.innerHTML = `Пока у Вас нет доходов`
+  }
+  if (epxenseFilter.length !== 0){
+    tableRenderTransaction(epxenseFilter, tableOperationsExpensesInner, $tableOperationsExpenses);
+  }else{
+    $tableOperationsExpenses.innerHTML = `Пока у Вас нет расходов`
+  }
+}
+
 
 initOperations();

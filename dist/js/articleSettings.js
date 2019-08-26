@@ -24,10 +24,14 @@ function addArticle() {
   var $articleName = document.querySelector('.js-articleName');
   var $chooseNewArticle = document.querySelector('.js-chooseNewArticle');
   $addArticle.addEventListener('click', function () {
-    appData[$chooseNewArticle.value].push($articleName.value);
-    localSt();
-    $articleName.value = '';
-    renderChooseArticle();
+    if ($articleName.value !== '') {
+      appData[$chooseNewArticle.value].push($articleName.value);
+      localSt();
+      $articleName.value = '';
+      renderChooseArticle();
+    } else {
+      alert('Заполните поля!');
+    }
   });
 }
 

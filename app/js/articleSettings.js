@@ -21,12 +21,18 @@ function addArticle() {
   let $addArticle = document.querySelector('.js-btnCreateArticle');
   let $articleName = document.querySelector('.js-articleName');
   let $chooseNewArticle = document.querySelector('.js-chooseNewArticle');
-  $addArticle.addEventListener('click', function () {
-    appData[$chooseNewArticle.value].push($articleName.value);
-    localSt();
-    $articleName.value = '';
-    renderChooseArticle();
-  });
+  
+    $addArticle.addEventListener('click', function () {
+      if ($articleName.value !== '') {
+      appData[$chooseNewArticle.value].push($articleName.value);
+      localSt();
+      $articleName.value = '';
+      renderChooseArticle();
+      }else {
+        alert('Заполните поля!')
+      }
+    });
+
 }
 
 function renderArticlesTables(x, z, c) {

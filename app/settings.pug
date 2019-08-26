@@ -86,26 +86,6 @@ block main
                     th(scope="col") Управление
                 tbody.tablePurses          
             .col
-              h2(align="center") Карты
-              table.table.table-bordered.table-hover
-                thead.thead-dark 
-                  tr
-                    th(scope="col")
-                    th(scope="col") Название
-                    th(scope="col") Сумма
-                    th(scope="col") Управление
-                tbody.tableCards                
-            div.col
-              h2(align="center") Вклады
-              table.table.table-bordered.table-hover
-                thead.thead-dark 
-                  tr
-                    th(scope="col")
-                    th(scope="col") Название
-                    th(scope="col") Сумма
-                    th(scope="col") Управление
-                tbody.tableContributions                
-            div.col
               h2(align="center") Копилки
               table.table.table-bordered.table-hover
                 thead.thead-dark 
@@ -114,7 +94,27 @@ block main
                     th(scope="col") Название
                     th(scope="col") Сумма
                     th(scope="col") Управление
-                tbody.tableMoneyBoxes        
+                tbody.tableMoneyBoxes  
+            .col
+              h2(align="center") Вклады
+              table.table.table-bordered.table-hover
+                thead.thead-dark 
+                  tr
+                    th(scope="col")
+                    th(scope="col") Название
+                    th(scope="col") Сумма
+                    th(scope="col") Управление
+                tbody.tableContributions             
+            .col
+              h2(align="center") Карты
+              table.table.table-bordered.table-hover
+                thead.thead-dark 
+                  tr
+                    th(scope="col")
+                    th(scope="col") Название
+                    th(scope="col") Сумма
+                    th(scope="col") Управление
+                tbody.tableCards        
 block append js        
   script(src="js/settingsPurses.js")
   script(src="js/articleSettings.js")

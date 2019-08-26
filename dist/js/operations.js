@@ -2,23 +2,32 @@
 
 var $chooseArticle = document.querySelector('.js-chooseArticle');
 var $chooseArticlesName = document.querySelector('.js-chooseArticlesName');
-var $choosePurses = document.querySelector('.js-choosePurses');
-var $chooseCards = document.querySelector('.js-chooseCards');
-var $chooseContributions = document.querySelector('.js-chooseContributions');
-var $chooseMoneyBoxes = document.querySelector('.js-chooseMoneyBoxes');
+var $chooseAccounts = document.querySelector('.js-chooseAccounts');
 var purses, cards, contributions, moneyboxes;
-var tablePursesInner = '';
-var tableCardsInner = '';
-var tableContributionsInner = '';
-var tableMoneyBoxesInner = '';
+var chooseAccountsInner = '';
+var $BtnCreateOperation = document.querySelector('.js-btnCreateOperation');
+var $operationValue = document.querySelector('.js-operationValue');
+var $accountValues = document.getElementsByName('moneyStorages');
+var $accountValue;
 
 function initOperations() {
   filterMoneyStorage();
+  filterTransaction();
+  createOperation();
   renderChooseArticle();
-  renderChoosePurse(purses, tablePursesInner, $choosePurses);
-  renderChoosePurse(cards, tableCardsInner, $chooseCards);
-  renderChoosePurse(contributions, tableContributionsInner, $chooseContributions);
-  renderChoosePurse(moneyboxes, tableMoneyBoxesInner, $chooseMoneyBoxes);
+  renderAllaccount();
+  renderTransaction();
+}
+
+var incomeFilter, epxenseFilter;
+
+function filterTransaction() {
+  incomeFilter = appData.transaction.filter(function (a) {
+    return a.type == 'income';
+  });
+  epxenseFilter = appData.transaction.filter(function (a) {
+    return a.type == 'expense';
+  });
 }
 
 function filterMoneyStorage() {
@@ -127,14 +136,92 @@ function renderChooseArticle() {
   });
 }
 
-function renderChoosePurse(array, content, place) {
-  var i = 1;
-  content = '';
-  array.forEach(function (element) {
-    content += "<div class=\"col\">\n      <input class=\"".concat(element.type, " form-check-input myInputRadio\" name=\"moneyStorages\" value=\"").concat(element.type, "\" type=\"radio\">\n      <label class=\"form-check-label myLabel\" for=\"moneyStorages").concat(i + 1, "\">").concat(element.name, " ").concat(element.value, "</label>\n      </div>\n      \n    ");
-    i++;
+function renderAllaccount() {
+  renderChoosePurse(purses);
+  renderChoosePurse(cards);
+  renderChoosePurse(contributions);
+  renderChoosePurse(moneyboxes);
+  $chooseAccounts.innerHTML = "<div class=\"cc-selector\">\n  ".concat(chooseAccountsInner, "\n  </div>");
+}
+
+function renderChoosePurse(array) {
+  array.forEach(function (element, i) {
+    chooseAccountsInner += " <input id=\"".concat(element.type).concat(i, "\" name=\"moneyStorages\" value=\"").concat(element.name, "\" data-value2=\"").concat(element.value, "\" type=\"radio\">\n    <label class=\"drinkcard-cc ").concat(element.type, "Radio\" for=\"").concat(element.type).concat(i, "\" value=\"").concat(element.name, "\" data-value2=\"").concat(element.value, "\"><span class=\"textBottom\">").concat(element.name, " ").concat(element.value, "</span></label>");
   });
-  place.innerHTML = content;
+}
+
+function createOperation() {
+  $BtnCreateOperation.addEventListener('click', function () {
+    $accountValues.forEach(function (element, i) {
+      if ($accountValues[i].checked == true) {
+        $accountValue = $accountValues[i];
+      }
+    });
+
+    if ($chooseArticle.value == 'newIncome') {
+      appData.transaction.push({
+        type: 'income',
+        date: new Date(),
+        account: $accountValue.value,
+        article: $chooseArticlesName.value,
+        value: $operationValue.value
+      });
+      appData.moneyStorage.forEach(function (element, i) {
+        if (element.name == $accountValue.value) {
+          appData.moneyStorage[i].value = getFloat($accountValue.dataset.value2) + getFloat($operationValue.value);
+        }
+      });
+    } else {
+      appData.transaction.push({
+        type: 'expense',
+        date: new Date(),
+        account: $accountValue.value,
+        article: $chooseArticlesName.value,
+        value: $operationValue.value
+      });
+      appData.moneyStorage.forEach(function (element, i) {
+        if (element.name == $accountValue.value) {
+          appData.moneyStorage[i].value = getFloat($accountValue.dataset.value2) - getFloat($operationValue.value);
+        }
+      });
+    }
+
+    localSt();
+    chooseAccountsInner = '';
+    $operationValue.value = '';
+    renderChooseArticle();
+    renderAllaccount();
+  });
+}
+
+;
+
+function renderTransaction() {
+  var $tableOperationsIncome = document.querySelector('.tableOperationsIncome');
+  var $tableOperationsExpenses = document.querySelector('.tableOperationsExpenses');
+  var tableOperationsExpensesInner, tableOperationsIncomeInner;
+
+  function tableRenderTransaction(array, innerBox, innerPlace) {
+    array.forEach(function (element, i) {
+      if (element !== null) {
+        innerBox += "\n        <tr>\n        <th>".concat(i + 1, "</th>\n        <td>").concat(element.date, "</td>\n        <td>").concat(element.account, "</td>\n        <td>").concat(element.article, "</td>\n        <td>").concat(element.value, "</td>\n        <td><button class=\"btn btn-primary delete").concat(element.type, "\"> \u0423\u0434\u0430\u043B\u0438\u0442\u044C </button></td>\n        ");
+      }
+    });
+    innerBox += "</tr>";
+    innerPlace.innerHTML = innerBox;
+  }
+
+  if (incomeFilter.length !== 0) {
+    tableRenderTransaction(incomeFilter, tableOperationsIncomeInner, $tableOperationsIncome);
+  } else {
+    $tableOperationsIncome.innerHTML = "\u041F\u043E\u043A\u0430 \u0443 \u0412\u0430\u0441 \u043D\u0435\u0442 \u0434\u043E\u0445\u043E\u0434\u043E\u0432";
+  }
+
+  if (epxenseFilter.length !== 0) {
+    tableRenderTransaction(epxenseFilter, tableOperationsExpensesInner, $tableOperationsExpenses);
+  } else {
+    $tableOperationsExpenses.innerHTML = "\u041F\u043E\u043A\u0430 \u0443 \u0412\u0430\u0441 \u043D\u0435\u0442 \u0440\u0430\u0441\u0445\u043E\u0434\u043E\u0432";
+  }
 }
 
 initOperations();

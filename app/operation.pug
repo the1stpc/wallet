@@ -7,25 +7,22 @@ block main
       h1(align="center") Создать операцию
   .form-group
     .row
-      .col
+      .col-.col-md-2
         select.js-chooseArticle.form-control
           option(value="newIncome") Доход от
           option(value="newExpense") Потратить на
-      .col
+      .col-.col-md-4
         select.js-chooseArticlesName.form-control
-      .col  
+      .col-.col-md-4
         input(class="js-operationValue form-control" type="number" placeholder="введите сумму")
-      .col
-        input(class="js-btnCreateOperation btn btn-primary" type="button" value="создать")   
+    br
+    h2 Выберите счет
     .row
-      .col 
-        .js-choosePurses.form-check
-      .col  
-        .js-chooseCards.form-check
-      .col  
-        .js-chooseContributions.form-check
-      .col  
-        .js-chooseMoneyBoxes.form-check
+      .col- 
+        form.js-chooseAccounts
+    .row.justify-content-center   
+      .col-
+        input(class="js-btnCreateOperation btn btn-primary" type="button" value="создать операцию")     
   .title.row
     .col
       h1(align="center") Операции
@@ -35,9 +32,10 @@ block main
       table.table.table-bordered.table-hover
         thead.thead-dark 
           tr
+            th(scope="col") Номер
             th(scope="col") Дата
+            th(scope="col") Счёт
             th(scope="col") Категория
-            th(scope="col") Куда
             th(scope="col") Сумма
             th(scope="col") Управление
         tbody.tableOperationsIncome 
@@ -46,9 +44,10 @@ block main
       table.table.table-bordered.table-hover
         thead.thead-dark 
           tr
+            th(scope="col") Номер
             th(scope="col") Дата
+            th(scope="col") Счёт
             th(scope="col") Категория
-            th(scope="col") Откуда
             th(scope="col") Сумма
             th(scope="col") Управление
         tbody.tableOperationsExpenses             

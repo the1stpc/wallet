@@ -6,11 +6,15 @@ var appData = {
   moneyStorage: [],
   income: [],
   expenses: [],
-  arrears: []
+  arrears: [],
+  transaction: [],
+  users: []
 };
 
 function getFloat(numberFloat) {
-  return parseFloat(numberFloat).toFixed(2);
+  let x = parseFloat(numberFloat);
+  x = x.toFixed(2);
+  return parseFloat(x);
 }
 
 function localSt() {
